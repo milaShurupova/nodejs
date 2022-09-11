@@ -15,9 +15,16 @@ export class ErrorMessages {
     public static InputParameterNotSupplied: string = "Input parameter not supplied";
 }
 
+export class SqlParameters {
+    public static Id: string  = "id";
+
+}
+
 export class Queries {
-    public static WhiteBoardTypes: string = "SELECT * FROM white_board_type";
-    public static WhiteBoardTypeByID: string = "SELECT * FROM white_board_type WHERE id = ";
+    public static WhiteBoardTypes: string = `SELECT * FROM white_board_type`;
+    public static WhiteBoardTypeByID: string = `SELECT * FROM white_board_type WHERE id = ?`;
+    public static UpdateWhiteBoardTypeByID: string = `UPDATE white_board_type SET white_board_type = ? WHERE id = ?`;
+
 }
 
 export const DB_CONNECTION_STRING: string = "server=.;Database=masa_school;Trusted_Connection=Yes;Driver={SQL Server Native Client 11.0}";
