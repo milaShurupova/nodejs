@@ -1,11 +1,18 @@
 export class ErrorCodes {
     public static ConnectionError: number = 100;
     public static QueryError: number = 101;
+    public static NoData: number = 102;
+    public static NonNumericInput: number = 103;
+    public static InputParameterNotSupplied: number = 104;
+
 }
 
 export class ErrorMessages {
     public static DbConnectionError: string = "DB server connection error";
     public static SqlQueryError: string = "Incorrect query";
+    public static NoDataFound: string = "Not found";
+    public static NonNumericInput: string = "Non numberic input";
+    public static InputParameterNotSupplied: string = "Input parameter not supplied";
 }
 
 export class Queries {
