@@ -5,6 +5,7 @@ export class ErrorCodes {
     public static NoData: number = 102;
     public static NonNumericInput: number = 103;
     public static InputParameterNotSupplied: number = 104;
+    public static DeletionConflict: number = 105;
 
 }
 
@@ -15,6 +16,7 @@ export class ErrorMessages {
     public static NoDataFound: string = "Not found";
     public static NonNumericInput: string = "Non numberic input";
     public static InputParameterNotSupplied: string = "Input parameter not supplied";
+    public static DeletionConflictMessage: string = "Deletion Conflict Message";
 }
 
 export class SqlParameters {
