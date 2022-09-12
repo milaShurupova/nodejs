@@ -8,6 +8,7 @@ interface ISchoolService {
     getBoardTypeById(id: number): Promise<whiteBoardType>;
     updateBoardTypeById(whiteBoardType: whiteBoardType): Promise<whiteBoardType>;
     addBoardType(whiteBoardType: whiteBoardType): Promise<whiteBoardType>;
+    deleteBoardTypeById(id: number): Promise<void>;
 }
 
 interface localWhiteBoardType {
@@ -48,7 +49,7 @@ export class SchoolService implements ISchoolService {
 
     public updateBoardTypeById(whiteBoardType: whiteBoardType): Promise<whiteBoardType> {
         return new Promise<whiteBoardType>((resolve, reject) => {
-            SqlHelper.executeQueryNoResult<localWhiteBoardType>(Queries.UpdateWhiteBoardTypeByID, whiteBoardType.type, whiteBoardType.id)
+            SqlHelper.executeQueryNoResult<localWhiteBoardType>(Queries.UpdateWhiteBoardTypeByID, false, whiteBoardType.type, whiteBoardType.id)
             .then(() => {
                 resolve(whiteBoardType);
             })
@@ -74,7 +75,7 @@ export class SchoolService implements ISchoolService {
         });
     }
 
-        public addBoardType(whiteBoardType: whiteBoardType): Promise<whiteBoardType> {
+    public addBoardType(whiteBoardType: whiteBoardType): Promise<whiteBoardType> {
         return new Promise<whiteBoardType>((resolve, reject) => {
             SqlHelper.createNew<whiteBoardType>(Queries.AddWhiteBoardType, whiteBoardType, whiteBoardType.type)
             .then((result: whiteBoardType) => {
@@ -84,6 +85,18 @@ export class SchoolService implements ISchoolService {
                 reject(error);
             });
 
+        })
+    }
+
+    public deleteBoardTypeById(id: number): Promise<void> {
+        return new Promise<void>((resolve, reject) => {
+            SqlHelper.executeQueryNoResult(Queries.DeleteBoardTypeByID, true, id)
+            .then(() => {
+                resolve();
+            })
+            .catch((error: systemError) => {
+                reject(error);
+            });
         })
     }
 

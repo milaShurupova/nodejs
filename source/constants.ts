@@ -29,6 +29,7 @@ export class Queries {
     public static WhiteBoardTypeByTitle: string = `SELECT * FROM white_board_type WHERE id = ?`;
     public static AddWhiteBoardType: string = `INSERT white_board_type (white_board_type) VALUES (?)`;
     public static SelectIdentity: string = `SELECT SCOPE_IDENTITY() AS id`;
+    public static DeleteBoardTypeByID: string = `DELETE FROM white_board_type WHERE id = ?`;
 
 }
 
