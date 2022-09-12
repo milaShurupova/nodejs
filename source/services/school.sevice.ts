@@ -6,7 +6,7 @@ import _ from 'underscore';
 interface ISchoolService {
     getBoardTypes(): Promise<whiteBoardType[]>;
     getBoardTypeById(id: number): Promise<whiteBoardType>;
-    updateBoardTypeById(whiteBoardType: whiteBoardType): Promise<void>;
+    updateBoardTypeById(whiteBoardType: whiteBoardType): Promise<whiteBoardType>;
     addBoardType(whiteBoardType: whiteBoardType): Promise<whiteBoardType>;
 }
 
@@ -46,11 +46,11 @@ export class SchoolService implements ISchoolService {
             });
     }
 
-    public updateBoardTypeById(whiteBoardType: whiteBoardType): Promise<void> {
-        return new Promise<void>((resolve, reject) => {
+    public updateBoardTypeById(whiteBoardType: whiteBoardType): Promise<whiteBoardType> {
+        return new Promise<whiteBoardType>((resolve, reject) => {
             SqlHelper.executeQueryNoResult<localWhiteBoardType>(Queries.UpdateWhiteBoardTypeByID, whiteBoardType.type, whiteBoardType.id)
             .then(() => {
-                resolve();
+                resolve(whiteBoardType);
             })
             .catch((error: systemError) => {
                 reject(error);
