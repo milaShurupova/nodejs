@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
-import { ErrorCodes, ErrorMessages } from '../constants';
+import { ErrorCodes, ErrorMessages, NON_EXISTENT_ID } from '../constants';
 import { systemError, whiteBoardType } from '../entities';
 import { ResponseHelper } from '../helpers/response.helper';
 import { SchoolService } from '../services/school.sevice';
@@ -69,4 +69,21 @@ const updateBoardTypeById = async (req: Request, res: Response, next: NextFuncti
     }
 };
 
-export default { getBoardTypes, getBoardTypebyId, updateBoardTypeById };
+    
+const addBoardType = async (req: Request, res: Response, next: NextFunction) => {
+    const body: whiteBoardType = req.body;
+
+    schoolService.addBoardType({
+        id: NON_EXISTENT_ID,
+        type: body.type
+    })
+        .then((result: whiteBoardType) => {
+            return res.status(200).json(result);
+        })
+        .catch((error: systemError) => {
+            return ResponseHelper.handleError(res, error);
+        });
+};
+
+
+export default { getBoardTypes, getBoardTypebyId, updateBoardTypeById, addBoardType };
