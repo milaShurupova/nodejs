@@ -24,6 +24,7 @@ export class Queries {
     public static WhiteBoardTypes: string = `SELECT * FROM white_board_type`;
     public static WhiteBoardTypeByID: string = `SELECT * FROM white_board_type WHERE id = ?`;
     public static UpdateWhiteBoardTypeByID: string = `UPDATE white_board_type SET white_board_type = ? WHERE id = ?`;
+    public static WhiteBoardTypeByTitle: string = `SELECT * FROM white_board_type WHERE id = ?`;
 
 }
 

@@ -1,6 +1,7 @@
 import { Queries } from "../constants";
 import { systemError, whiteBoardType } from "../entities";
 import { SqlHelper } from "../helpers/sql.helper";
+import _ from 'underscore';
 
 interface ISchoolService {
     getBoardTypes(): Promise<whiteBoardType[]>;
@@ -23,6 +24,7 @@ export class SchoolService implements ISchoolService {
                     queryResult.forEach((whiteBoardType: localWhiteBoardType) => {
                         result.push(this.parseLocalBoardType(whiteBoardType));
                     });
+
                     resolve(result);
                 })     
                 .catch((error: systemError) => {
@@ -54,6 +56,21 @@ export class SchoolService implements ISchoolService {
             });
 
         })
+    }
+
+    public getBoardTypeByTitle(title: string): Promise<whiteBoardType[]> {
+        return new Promise<whiteBoardType[]>((resolve, reject) => {    
+
+            SqlHelper.executeQueryArrayResult<localWhiteBoardType>(Queries.WhiteBoardTypeByTitle, `%${title}%`)
+            .then((queryResult: localWhiteBoardType[]) => {
+                resolve(_.map(queryResult, (result: localWhiteBoardType) => 
+                    this.parseLocalBoardType(result)
+                ))
+            })     
+            .catch((error: systemError) => {
+                reject(error);
+            });
+        });
     }
 
 
