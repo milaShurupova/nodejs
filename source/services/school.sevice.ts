@@ -1,7 +1,9 @@
-import { Queries } from "../constants";
+import { Queries, TEMP_USER_ID } from "../constants";
 import { systemError, whiteBoardType } from "../entities";
 import { SqlHelper } from "../helpers/sql.helper";
 import _ from 'underscore';
+import { Status } from "../enums";
+import { DateHelper } from "../helpers/date.helper";
 
 interface ISchoolService {
     getBoardTypes(): Promise<whiteBoardType[]>;
@@ -9,11 +11,17 @@ interface ISchoolService {
     updateBoardTypeById(whiteBoardType: whiteBoardType): Promise<whiteBoardType>;
     addBoardType(whiteBoardType: whiteBoardType): Promise<whiteBoardType>;
     deleteBoardTypeById(id: number): Promise<void>;
+    getBoardTypeByTitle(title: string): Promise<whiteBoardType[]>;
 }
 
 interface localWhiteBoardType {
     id: number;
     white_board_type: string;
+    create_date: Date;
+    update_date: Date;
+    create_user_id: number;
+    update_user_id: number;
+    status_id: Status;
 }
 
 export class SchoolService implements ISchoolService {
@@ -21,7 +29,7 @@ export class SchoolService implements ISchoolService {
     public getBoardTypes(): Promise<whiteBoardType[]> {
         return new Promise<whiteBoardType[]>((resolve, reject) => {
             const result: whiteBoardType[] = [];
-                SqlHelper.executeQueryArrayResult<localWhiteBoardType>(Queries.WhiteBoardTypes)
+                SqlHelper.executeQueryArrayResult<localWhiteBoardType>(Queries.WhiteBoardTypes, Status.Active)
                 .then((queryResult: localWhiteBoardType[]) => {
                     queryResult.forEach((whiteBoardType: localWhiteBoardType) => {
                         result.push(this.parseLocalBoardType(whiteBoardType));
@@ -37,7 +45,7 @@ export class SchoolService implements ISchoolService {
 
     public getBoardTypeById(id: number): Promise<whiteBoardType> {
         return new Promise<whiteBoardType>((resolve, reject) => {       
-            SqlHelper.executeQuerySingleResult<localWhiteBoardType>(Queries.WhiteBoardTypeByID, id)
+            SqlHelper.executeQuerySingleResult<localWhiteBoardType>(Queries.WhiteBoardTypeByID, id, Status.Active)
                 .then((queryResult: localWhiteBoardType) => {
                     resolve(this.parseLocalBoardType(queryResult));
                 })
@@ -49,7 +57,10 @@ export class SchoolService implements ISchoolService {
 
     public updateBoardTypeById(whiteBoardType: whiteBoardType): Promise<whiteBoardType> {
         return new Promise<whiteBoardType>((resolve, reject) => {
-            SqlHelper.executeQueryNoResult<localWhiteBoardType>(Queries.UpdateWhiteBoardTypeByID, false, whiteBoardType.type, whiteBoardType.id)
+            const updateDate: Date = new Date();
+            const updateUser: number = TEMP_USER_ID;
+
+            SqlHelper.executeQueryNoResult<localWhiteBoardType>(Queries.UpdateWhiteBoardTypeByID, false, whiteBoardType.type, DateHelper.dateToString(updateDate), updateUser, whiteBoardType.id, Status.Active)
             .then(() => {
                 resolve(whiteBoardType);
             })
@@ -60,24 +71,27 @@ export class SchoolService implements ISchoolService {
         })
     }
 
-    public getBoardTypeByTitle(title: string): Promise<whiteBoardType[]> {
-        return new Promise<whiteBoardType[]>((resolve, reject) => {    
+    // public getBoardTypeByTitle(title: string): Promise<whiteBoardType[]> {
+    //     return new Promise<whiteBoardType[]>((resolve, reject) => {    
 
-            SqlHelper.executeQueryArrayResult<localWhiteBoardType>(Queries.WhiteBoardTypeByTitle, `%${title}%`)
-            .then((queryResult: localWhiteBoardType[]) => {
-                resolve(_.map(queryResult, (result: localWhiteBoardType) => 
-                    this.parseLocalBoardType(result)
-                ))
-            })     
-            .catch((error: systemError) => {
-                reject(error);
-            });
-        });
-    }
+    //         SqlHelper.executeQueryArrayResult<localWhiteBoardType>(Queries.WhiteBoardTypeByTitle, `%${title}%`)
+    //         .then((queryResult: localWhiteBoardType[]) => {
+    //             resolve(_.map(queryResult, (result: localWhiteBoardType) => 
+    //                 this.parseLocalBoardType(result)
+    //             ))
+    //         })     
+    //         .catch((error: systemError) => {
+    //             reject(error);
+    //         });
+    //     });
+    // }
 
     public addBoardType(whiteBoardType: whiteBoardType): Promise<whiteBoardType> {
         return new Promise<whiteBoardType>((resolve, reject) => {
-            SqlHelper.createNew<whiteBoardType>(Queries.AddWhiteBoardType, whiteBoardType, whiteBoardType.type)
+            const createDate: string = DateHelper.dateToString(new Date());
+            const createUser: number = TEMP_USER_ID;
+
+            SqlHelper.createNew<whiteBoardType>(Queries.AddWhiteBoardType, whiteBoardType, whiteBoardType.type, createDate, createDate, createUser, createUser, Status.Active)
             .then((result: whiteBoardType) => {
                 resolve(result);
             })
@@ -90,7 +104,10 @@ export class SchoolService implements ISchoolService {
 
     public deleteBoardTypeById(id: number): Promise<void> {
         return new Promise<void>((resolve, reject) => {
-            SqlHelper.executeQueryNoResult(Queries.DeleteBoardTypeByID, true, id)
+            const updateDate: Date = new Date();
+            const updateUser: number = TEMP_USER_ID;
+
+            SqlHelper.executeQueryNoResult(Queries.DeleteBoardTypeByID, true, DateHelper.dateToString(updateDate),  updateUser, Status.NotActive, id, Status.Active)
             .then(() => {
                 resolve();
             })
@@ -98,6 +115,18 @@ export class SchoolService implements ISchoolService {
                 reject(error);
             });
         })
+    }
+
+    public getBoardTypeByTitle(title: string): Promise<whiteBoardType[]> {
+        return new Promise<whiteBoardType[]>((resolve, reject) => {
+            SqlHelper.executeQueryArrayResult<localWhiteBoardType>(Queries.WhiteBoardTypeByTitle, `%${title}%`)
+                .then((queryResult: localWhiteBoardType[]) => {
+                    resolve(_.map(queryResult, (result: localWhiteBoardType) => this.parseLocalBoardType(result)));
+                })
+                .catch((error: systemError) => {
+                    reject(error);
+                });
+        });
     }
 
     private parseLocalBoardType(local: localWhiteBoardType): whiteBoardType {

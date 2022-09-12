@@ -107,5 +107,16 @@ const deleteBoardTypeById = async (req: Request, res: Response, next: NextFuncti
     }
 };
 
+const getBoardTypeByTitle = async (req: Request, res: Response, next: NextFunction) => {
+    let title: string = req.params.title;
+    
+    schoolService.getBoardTypeByTitle(title)
+        .then((result: whiteBoardType[]) => {
+            return res.status(200).json(result);
+        })
+        .catch((error: systemError) => {
+            return ResponseHelper.handleError(res, error);
+        });
+};
 
-export default { getBoardTypes, getBoardTypebyId, updateBoardTypeById, addBoardType, deleteBoardTypeById };
+export default { getBoardTypes, getBoardTypebyId, updateBoardTypeById, addBoardType, deleteBoardTypeById, getBoardTypeByTitle };
