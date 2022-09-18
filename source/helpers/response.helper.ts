@@ -4,7 +4,7 @@ import { AppError } from '../enums';
 
 
 export class ResponseHelper {
-    public static handleError(response: Response<any, Record<string, any>>, error: systemError): Response<any, Record<string, any>> {
+    public static handleError(response: Response<any, Record<string, any>>, error: systemError, isAuthentication: boolean = false): Response<any, Record<string, any>> {
         switch (error.key) {
             case AppError.ConnectionError:
                 return response.status(408).json({
@@ -15,6 +15,15 @@ export class ResponseHelper {
                 return response.status(406).json({
                     errorMessage: error.message
                 });
+            case AppError.NoData:
+                if (isAuthentication) {
+                    return response.sendStatus(403);
+                }
+                else {
+                    return response.status(404).json({
+                        errorMessage: error.message
+                    });
+                }   
             default:
                 return response.status(400).json({
                     errorMessage: error.message
