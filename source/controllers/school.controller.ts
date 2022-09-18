@@ -1,12 +1,13 @@
 import { Request, Response, NextFunction } from 'express';
-import { ErrorCodes, ErrorMessages, NON_EXISTENT_ID } from '../constants';
+import { NON_EXISTENT_ID } from '../constants';
 import { systemError, whiteBoardType } from '../entities';
 import { ResponseHelper } from '../helpers/response.helper';
-import { SchoolService } from '../services/school.sevice';
-import { ErrorHelper } from '../helpers/error.helper';
+import { ErrorService } from '../services/error.service';
+import { SchoolService } from '../services/school.service';
 import { RequestHelper } from '../helpers/request.helper';
 
-const schoolService: SchoolService = new SchoolService();
+const errorService: ErrorService = new ErrorService();
+const schoolService: SchoolService = new SchoolService(errorService);
 
 const getBoardTypes = async (req: Request, res: Response, next: NextFunction) => {
     
@@ -22,7 +23,7 @@ const getBoardTypes = async (req: Request, res: Response, next: NextFunction) =>
 };
 
 const getBoardTypebyId = async (req: Request, res: Response, next: NextFunction) => {
-    const numericParamOrError: number | systemError = RequestHelper.ParseNumericInput(req.params.id);
+    const numericParamOrError: number | systemError = RequestHelper.ParseNumericInput(errorService, req.params.id);
     if(typeof numericParamOrError === "number") {
         if (numericParamOrError > 0) {
             schoolService.getBoardTypeById(numericParamOrError)
@@ -44,7 +45,7 @@ const getBoardTypebyId = async (req: Request, res: Response, next: NextFunction)
 };
 
 const updateBoardTypeById = async (req: Request, res: Response, next: NextFunction) => {
-    const numericParamOrError: number | systemError = RequestHelper.ParseNumericInput(req.params.id);
+    const numericParamOrError: number | systemError = RequestHelper.ParseNumericInput(errorService, req.params.id);
     if(typeof numericParamOrError === "number") {
         if (numericParamOrError > 0) {
             const body: whiteBoardType = req.body;
@@ -86,7 +87,7 @@ const addBoardType = async (req: Request, res: Response, next: NextFunction) => 
 };
 
 const deleteBoardTypeById = async (req: Request, res: Response, next: NextFunction) => {
-    const numericParamOrError: number | systemError = RequestHelper.ParseNumericInput(req.params.id);
+    const numericParamOrError: number | systemError = RequestHelper.ParseNumericInput(errorService, req.params.id);
     if(typeof numericParamOrError === "number") {
         if (numericParamOrError > 0) {
             schoolService.deleteBoardTypeById(numericParamOrError)
