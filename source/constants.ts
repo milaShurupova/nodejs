@@ -12,9 +12,11 @@ export class Queries {
     public static SelectIdentity: string = `SELECT SCOPE_IDENTITY() AS id`;
     public static DeleteBoardTypeByID: string = `UPDATE white_board_type SET update_date = ?, update_user_id = ?, status_id = ? WHERE id = ? AND status_id = ?`;
 
+    public static GetUserByID: string = `SELECT id, password FROM [user] WHERE login = ?`;
 }
 
 export const DB_CONNECTION_STRING: string = "server=.;Database=masa_school;Trusted_Connection=Yes;Driver={SQL Server Native Client 11.0}";
 export const NON_EXISTENT_ID: number = -1;
 export const TEMP_USER_ID: number = 1;
+export const TOKEN_SECRET: string = "b0a6b2e5-5839-4a86-8133-564fee43c482";
 
