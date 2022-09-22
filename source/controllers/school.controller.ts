@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import { NON_EXISTENT_ID } from '../constants';
-import { systemError, whiteBoardType } from '../entities';
+import { authenticatedRequest, systemError, whiteBoardType } from '../entities';
 import { ResponseHelper } from '../helpers/response.helper';
 import { ErrorService } from '../services/error.service';
 import { SchoolService } from '../services/school.service';
@@ -49,10 +49,12 @@ const updateBoardTypeById = async (req: Request, res: Response, next: NextFuncti
     if(typeof numericParamOrError === "number") {
         if (numericParamOrError > 0) {
             const body: whiteBoardType = req.body;
+
+            
             schoolService.updateBoardTypeById({
                 id: numericParamOrError,
                 type: body.type
-            })
+            }, (req as authenticatedRequest).userData.userId)
                 .then((result: whiteBoardType) => {
                     return res.status(200).json(result);
                 })
@@ -77,7 +79,7 @@ const addBoardType = async (req: Request, res: Response, next: NextFunction) => 
     schoolService.addBoardType({
         id: NON_EXISTENT_ID,
         type: body.type
-    })
+    }, (req as authenticatedRequest).userData.userId)
         .then((result: whiteBoardType) => {
             return res.status(200).json(result);
         })
@@ -90,7 +92,7 @@ const deleteBoardTypeById = async (req: Request, res: Response, next: NextFuncti
     const numericParamOrError: number | systemError = RequestHelper.ParseNumericInput(errorService, req.params.id);
     if(typeof numericParamOrError === "number") {
         if (numericParamOrError > 0) {
-            schoolService.deleteBoardTypeById(numericParamOrError)
+            schoolService.deleteBoardTypeById(numericParamOrError, (req as authenticatedRequest).userData.userId)
                 .then(() => {
                     return res.sendStatus(200);
                 })
