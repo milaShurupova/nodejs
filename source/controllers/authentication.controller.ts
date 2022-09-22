@@ -2,10 +2,11 @@ import { Request, Response, NextFunction } from 'express';
 import bcrypt from "bcryptjs";
 import { ErrorService } from '../services/error.service';
 import { AuthenticationService } from '../services/authentication.service';
-import { jwtUserData, systemError } from '../entities';
+import { authenticationToken, jwtUserData, systemError } from '../entities';
 import { ResponseHelper } from '../helpers/response.helper';
 import jwt from "jsonwebtoken";
 import { TOKEN_SECRET } from "../constants";
+import { Role } from '../enums';
 
 
 
@@ -23,8 +24,11 @@ const login = async (req: Request, res: Response, next: NextFunction) => {
     authenticationService.login(user.login, user.password)
         .then((userData: jwtUserData) => {
             
+            const authenticationToken: authenticationToken = {
+                userData: userData
+            }
             const token: string = jwt.sign(
-                userData,
+                authenticationToken,
                TOKEN_SECRET,
                {
                 expiresIn: "2h",
@@ -39,5 +43,7 @@ const login = async (req: Request, res: Response, next: NextFunction) => {
     });
     
 };
+
+
 
 export default { login }

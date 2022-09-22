@@ -1,14 +1,13 @@
 import jwt, { JwtPayload } from "jsonwebtoken";
 import { Request, Response, NextFunction } from 'express';
 import { TOKEN_SECRET } from "../constants";
-import { jwtUserData } from '../entities';
+import { authenticationToken, jwtUserData, authenticatedRequest } from '../entities';
+import { Role } from "../enums";
 
-interface authenticatedRequest extends Request {
-    userId: number;
-}
+
 
 interface jwtBase {
-    userId: number;
+    userData: jwtUserData;
     exp: number;
     iat: number;
 
@@ -24,7 +23,7 @@ const verifyToken = (req: Request, res: Response, next: NextFunction) => {
   try {
     token = token.substring("Bearer ".length);
     const decoded: string | JwtPayload = jwt.verify(token, TOKEN_SECRET);
-    (req as authenticatedRequest).userId = (decoded as jwtBase).userId;
+    (req as authenticatedRequest).userData = (decoded as jwtBase).userData;
   } catch (err) {
     return res.status(401).send("Invalid Token");
   }
