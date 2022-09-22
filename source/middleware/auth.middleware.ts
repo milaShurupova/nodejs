@@ -13,7 +13,7 @@ interface jwtBase {
 
 }
 
-const verifyToken = (req: Request, res: Response, next: NextFunction) => {
+const verifyToken = (roles: Role[]) => (req: Request, res: Response, next: NextFunction) => {
   let token: string | undefined = req.headers["authorization"]?.toString();
 
   if (!token) {
@@ -23,6 +23,9 @@ const verifyToken = (req: Request, res: Response, next: NextFunction) => {
   try {
     token = token.substring("Bearer ".length);
     const decoded: string | JwtPayload = jwt.verify(token, TOKEN_SECRET);
+    if(roles.indexOf((decoded as jwtBase).userData.userId) === -1) {
+      return res.status(401);
+    }
     (req as authenticatedRequest).userData = (decoded as jwtBase).userData;
   } catch (err) {
     return res.status(401).send("Invalid Token");
