@@ -5,7 +5,6 @@ import { authenticationToken, jwtUserData, authenticatedRequest } from '../entit
 import { Role } from "../enums";
 
 
-
 interface jwtBase {
     userData: jwtUserData;
     exp: number;

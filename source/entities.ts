@@ -31,3 +31,10 @@ export interface jwtUserData {
 }
 
 export interface authenticatedRequest extends Request, authenticationToken {}
+
+export interface user extends entityWithId {
+    firstName: string;
+    lastName: string;
+    login?: string;
+    password?: string;
+}
