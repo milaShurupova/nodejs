@@ -26,21 +26,23 @@ const login = async (req: Request, res: Response, next: NextFunction) => {
             
             const authenticationToken: authenticationToken = {
                 userData: userData
-            }
+            };
+
             const token: string = jwt.sign(
-                authenticationToken,
+               authenticationToken,
                TOKEN_SECRET,
                {
                 expiresIn: "2h",
                }
             );
-            res.status(200).json({
+            return res.status(200).json({
                 token: token
+            });
+            
+        })
+        .catch((error: systemError) => {
+            return ResponseHelper.handleError(res, error, true);
         });
-    })
-    .catch((error: systemError) => {
-        return ResponseHelper.handleError(res, error, true);
-    });
     
 };
 

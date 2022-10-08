@@ -23,7 +23,7 @@ const verifyToken = (roles: Role[]) => (req: Request, res: Response, next: NextF
     token = token.substring("Bearer ".length);
     const decoded: string | JwtPayload = jwt.verify(token, TOKEN_SECRET);
     if(roles.indexOf((decoded as jwtBase).userData.userId) === -1) {
-      return res.status(401);
+      return res.sendStatus(401);
     }
     (req as authenticatedRequest).userData = (decoded as jwtBase).userData;
   } catch (err) {

@@ -23,13 +23,13 @@ export class AuthenticationService implements IAuthenticationService {
 
     public login (login: string, password: string): Promise<jwtUserData> {
         return new Promise<jwtUserData>((resolve, reject) => {
-            SqlHelper.executeQuerySingleResult<localUser>(this.errorService, Queries.GetUserByID, login)
+            SqlHelper.executeQuerySingleResult<localUser>(this.errorService, Queries.GetUserByLogin, login)
                 .then((user: localUser) => {
                     if (bcrypt.compareSync(password, user.password)) {
                         const result: jwtUserData = {
                             userId: user.id,
                             roleId: user.role_id
-                        }
+                        };
                         resolve(result);
                     }
                     else {

@@ -28,6 +28,7 @@ export interface authenticationToken {
 export interface jwtUserData {
     userId: number;
     roleId: Role;
+    // roles: Role[];
 }
 
 export interface authenticatedRequest extends Request, authenticationToken {}
@@ -38,3 +39,23 @@ export interface user extends entityWithId {
     login?: string;
     password?: string;
 }
+
+// for a few roles from Homework
+// interface LocalRole {
+//     role_id: number;
+// }
+
+// const dbResult: LocalRole[] = [
+//     12,
+//     15,
+//     2
+// ]
+
+// dblResult.forEach(element => {
+//     jwtData.roles.push(element);
+// });
+
+// const jwtData: jwtUserData = {
+//     userID: <user id >,
+//     roles: []
+// }
