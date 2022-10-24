@@ -4,22 +4,19 @@ class UserController {
 
   constructor() {}
 
-  async getUserByID(req: any, res: Response, next: NextFunction) {
+  async getUserByID(req: Request, res: Response, next: NextFunction) {
 
-
-    
-    
-    // return res.status(200).json({
-    //   success: true,
-    //   data: [
-    //     {
-    //       name: "John",
-    //     },
-    //     {
-    //       name: "Steve",
-    //     },
-    //   ],
-    // });
+    return res.status(200).json({
+      success: true,
+      data: [
+        {
+          name: "John",
+        },
+        {
+          name: "Steve",
+        },
+      ],
+    });
   }
 }
 

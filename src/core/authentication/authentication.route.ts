@@ -1,15 +1,15 @@
 import { RouteConfig } from "../../framework/route.config";
 import express, { Application, Request, Response } from "express";
-import UserController from "./user.controller";
+import AuthenticationController from "./authentication.controller";
 
-export class UserRoutes extends RouteConfig {
+export class AuthenticationRoutes extends RouteConfig {
 
   constructor(app: Application) {
     super(app, "UserRoutes");
   }
   
   public configureRoutes() {
-    this.app.route(`/user/:id`).get([UserController.getUserByID]);
+    this.app.route(`/auth/login`).post([AuthenticationController.login]);
     return this.app;
   }
 }
