@@ -5,8 +5,10 @@ import { RouteConfig } from "./framework/route.config";
 import { UserRoutes } from "./modules/user/user.route";
 import { SchoolRoutes } from "./modules/school/school.route";
 import { AuthenticationRoutes } from "./core/authentication/authentication.route";
+import { StaticEnvironment } from "./core/enviroment.static";
+import LoggerService from "./core/logger.service";
 
-
+LoggerService.initialize();
 
 const routes: Array<RouteConfig> = [];
 const app: Express = express();
@@ -14,27 +16,20 @@ const app: Express = express();
 app.use(express.json());
 app.use(cors());
 
-
-const PORT: number = 7000;
-
-if (process.env.DEBUG) {
-  process.on("unhandledRejection", function(reason) {
-    process.exit(1)
-  })
-};
+// if (process.env.DEBUG) {
+//   process.on("unhandledRejection", function(reason) {
+//     process.exit(1)
+//   })
+// };
 
 routes.push(new UserRoutes(app));
 routes.push(new SchoolRoutes(app));
 routes.push(new AuthenticationRoutes(app));
-app.get("/", (req: Request, res: Response) => {
-  res.send("Welcome world")
-});
-
 
 const server: http.Server = http.createServer(app);
 
-server.listen(PORT, () => {
-  console.log(`Server is running on ${PORT}`);
+server.listen(StaticEnvironment.serverPort, () => {
+  console.log(`Server is running on ${StaticEnvironment.serverPort}`);
   routes.forEach((route: RouteConfig) => {
     console.log(`Routes configured for ${route.getName()}`)
   });

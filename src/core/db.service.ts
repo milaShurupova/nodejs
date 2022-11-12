@@ -2,7 +2,7 @@ import * as _ from "underscore";
 import { columnDefinition, tableDefinition } from "../db-entities";
 import { status, user, whiteBoardType } from "../entities";
 import { ColumnType, TableNames, ColumnUpdateType } from "../enums";
-import { DbTable } from "./db-table.servise";
+import { DbTable } from "./db-table.service";
 
 
 interface localTable<T> {

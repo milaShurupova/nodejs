@@ -1,10 +1,12 @@
 import _ from "underscore";
 import { Queries } from "../../constants";
 import { whiteBoardType, systemError, entityWithId, classRoom, teacherGraduation, teacher, status } from "../../entities";
-import { AppError, Status } from "../../enums";
+import { AppError, Status, TableNames } from "../../enums";
 import { DateHelper } from "../../framework/date.helper";
 import { SqlHelper } from "../../core/sql.helper";
-import errorService from "../../core/error.service";
+import ErrorService from "../../core/error.service";
+import DbService from "../../core/db.service"
+
 
 interface localWhiteBoardType {
     id: number;
@@ -258,9 +260,9 @@ class SchoolService implements ISchoolService {
         });
     }
 
-    // public async getStatusById(id: number): Promise<status> {
-    //     return await DbService.getFromTableById(TableNames.Status, id);
-    // }
+    public async getStatusById(id: number): Promise<status> {
+        return await DbService.getFromTableById(TableNames.Status, id);
+    }
 
     private parseLocalClassRoom(local: localClassRoom): classRoom {
         return {
@@ -294,7 +296,7 @@ class SchoolService implements ISchoolService {
 
     private parseLocalTeacher(local: localTeacher[]): teacher {
         if (local.length === 0) {
-            throw errorService.getError(AppError.NoData);
+            throw ErrorService.getError(AppError.NoData);
         }
 
         return {

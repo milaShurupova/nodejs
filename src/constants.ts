@@ -51,7 +51,8 @@ export class Queries {
 
 }
 
-export const DB_CONNECTION_STRING: string = "server=.;Database=masa_school;Trusted_Connection=Yes;Driver={SQL Server Native Client 11.0}";
 export const NON_EXISTENT_ID: number = -1;
-export const TOKEN_SECRET: string = "b0a6b2e5-5839-4a86-8133-564fee43c482";
+//export const TOKEN_SECRET: string = "b0a6b2e5-5839-4a86-8133-564fee43c482";
+//export const DB_CONNECTION_STRING: string = "server=.;Database=masa_school;Trusted_Connection=Yes;Driver={SQL Server Native Client 11.0}";
+
 

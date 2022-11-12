@@ -3,7 +3,6 @@ import { Queries } from "../constants";
 import { entityWithId, systemError } from "../entities";
 import { AppError } from "../enums";
 import { StaticEnvironment } from "./enviroment.static";
-
 import ErrorService from "./error.service";
 
 
