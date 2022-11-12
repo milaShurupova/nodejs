@@ -35,7 +35,7 @@ export class SqlHelper {
             });
     }
 
-    public static executeQuerySingleResult<T>(errorService: ErrorService, query: string, ...params: (string | number)[]): Promise<T> {
+    public static executeQuerySingleResult<T>(errorService: ErrorService, query: string, ...params: (string | number | boolean)[]): Promise<T> {
         return new Promise<T>((resolve, reject) => {
             SqlHelper.openConnection(errorService)
                 .then((connection: Connection) => {

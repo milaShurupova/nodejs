@@ -11,5 +11,9 @@ router.get('/board-type-by-title/:title', middleware.verifyToken([Role.Administr
 router.post('/board-type', middleware.verifyToken([Role.Administrator, Role.RegularUser]), controller.addBoardType);
 router.delete('/board-type/:id', middleware.verifyToken([Role.Administrator, Role.RegularUser]), controller.deleteBoardTypeById);
 
+router.get('/room/:id', middleware.verifyToken([Role.RegularUser]), controller.getRoomById);
+
+router.put('/teacher/:id', middleware.verifyToken([Role.Administrator, Role.RegularUser]), controller.updateTeacherById);
+
 
 export default { router }

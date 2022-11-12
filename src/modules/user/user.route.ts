@@ -5,11 +5,11 @@ import UserController from "./user.controller";
 export class UserRoutes extends RouteConfig {
 
   constructor(app: Application) {
-    super(app, "UserRoutes");
+    super(app, "UserRoutes", "user");
   }
   
   public configureRoutes() {
-    this.app.route(`/user/:id`).get([UserController.getUserByID]);
+    this.app.route(`/${this.baseUrl}/:id`).get([UserController.getUserByID]);
     return this.app;
   }
 }

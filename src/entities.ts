@@ -1,12 +1,46 @@
 import { Request } from "express";
-import { AppError, Role } from "./enums";
+import { AppError, Role, Status } from "./enums";
 
 export interface entityWithId {
     id: number;
 }
 
-export interface whiteBoardType extends entityWithId {
-    type: string;   
+export interface entityBase extends entityWithId {
+    createDate?: string;
+    updateDate?: string;
+    createUser?: user;
+    updateUser?: user;
+    statusId?: Status;
+}
+
+export interface whiteBoardType extends entityBase {
+    type: string;  
+    createUserID?: number; // will remove later
+    updateUserID?: number; // will remove later
+}
+
+export interface classRoom extends entityBase {
+    roomNumber: number;
+    roomFloor: number;
+    hasProjector: boolean;
+    whiteBoardType: whiteBoardType;
+}
+
+export interface teacher extends entityWithId {
+    firstName: string;
+    lastName: string;
+    birthdate: Date;
+    isMale: boolean;
+    graduations: teacherGraduation[];
+}
+
+export interface profession extends entityWithId {
+    title: string;
+}
+
+export interface teacherGraduation {
+    profession: profession;
+    graduationYear: number;
 }
 
 export interface systemError {
@@ -31,13 +65,24 @@ export interface jwtUserData {
     // roles: Role[];
 }
 
-export interface authenticatedRequest extends Request, authenticationToken {}
+export interface AuthenticatedRequest extends Request, authenticationToken {}
 
 export interface user extends entityWithId {
     firstName: string;
     lastName: string;
     login?: string;
     password?: string;
+}
+
+export interface status extends entityWithId {
+    statusName: string;
+}
+
+export interface environment {
+    dbConnectionString: string;
+    tokenSecret: string;
+    logsFolder: string;
+    serverPort: number;
 }
 
 // for a few roles from Homework
