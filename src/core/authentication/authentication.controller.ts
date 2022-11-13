@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from "express";
-import { TOKEN_SECRET } from "../../constants";
+import { StaticEnvironment } from "../environment.static";
 import { jwtUserData, authenticationToken, systemError } from "../../entities";
 import { ResponseHelper } from "../../framework/response.helper";
 import AuthenticationService from './authentication.service';
@@ -26,7 +26,7 @@ class AuthenticationController {
   
               const token: string = jwt.sign(
                  authenticationToken,
-                 TOKEN_SECRET,
+                 StaticEnvironment.tokenSecret,
                  {
                   expiresIn: "2h",
                  }

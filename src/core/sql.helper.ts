@@ -2,7 +2,7 @@ import { Connection, SqlClient, Error, Query, ProcedureManager } from "msnodesql
 import { Queries } from "../constants";
 import { entityWithId, systemError } from "../entities";
 import { AppError } from "../enums";
-import { StaticEnvironment } from "./enviroment.static";
+import { StaticEnvironment } from "./environment.static";
 import ErrorService from "./error.service";
 
 

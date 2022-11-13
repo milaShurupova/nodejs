@@ -184,11 +184,11 @@ class SchoolService implements ISchoolService {
             });
     }
     
-    public updateRoomById(room: classRoom, userID: number): Promise<classRoom> {
+    public updateRoomById(room: classRoom, userId: number): Promise<classRoom> {
         return new Promise<classRoom>((resolve, reject) => {
             const updateDate: Date = new Date();
 
-            SqlHelper.executeQueryNoResult<classRoom>(Queries.UpdateRoomById, false, room.roomNumber, room.roomFloor, room.hasProjector, room.whiteBoardType.id, DateHelper.dateToString(updateDate), userID, room.id, Status.Active)
+            SqlHelper.executeQueryNoResult<classRoom>(Queries.UpdateRoomById, false, room.roomNumber, room.roomFloor, room.hasProjector, room.whiteBoardType.id, userId, DateHelper.dateToString(updateDate), room.id, Status.Active)
                 .then(() => {
                     return this.getRoomById(room.id);
                 })
@@ -205,7 +205,7 @@ class SchoolService implements ISchoolService {
     public async addRoom(room: classRoom, userId: number): Promise<classRoom> {
         return new Promise<classRoom>((resolve, reject) => {
             const now = DateHelper.dateToString(new Date);
-            SqlHelper.createNew(Queries.AddRoom, room, room.roomNumber, room.roomFloor, room.hasProjector, room.whiteBoardType.id, userId, room.id, Status.Active)
+            SqlHelper.createNew(Queries.AddRoom, room, room.roomNumber, room.roomFloor, room.hasProjector, room.whiteBoardType.id, userId, userId, now, now, Status.Active)
                 .then((result: entityWithId) => {
                     return this.getRoomById(room.id);
                 })

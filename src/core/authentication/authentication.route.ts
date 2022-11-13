@@ -5,7 +5,7 @@ import AuthenticationController from "./authentication.controller";
 export class AuthenticationRoutes extends RouteConfig {
 
   constructor(app: Application) {
-    super(app, "UserRoutes", "auth");
+    super(app, "AuthenticationRoutes", "auth");
   }
   
   public configureRoutes() {

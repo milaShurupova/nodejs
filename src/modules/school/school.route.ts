@@ -11,6 +11,7 @@ export class SchoolRoutes extends RouteConfig {
   }
   
   public configureRoutes() {
+    
     this.app.route(`/${this.baseUrl}/board-types`).get([
       AuthMiddleware.verifyToken([Role.RegularUser]), 
       SchoolController.getBoardTypes]);

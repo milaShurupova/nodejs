@@ -2,7 +2,7 @@ import jwt, { JwtPayload } from "jsonwebtoken";
 import { AuthenticatedRequest, jwtUserData } from "../../entities";
 import { Request, Response, NextFunction } from "express";
 import { Role } from "../../enums";
-import { StaticEnvironment } from "../enviroment.static";
+import { StaticEnvironment } from "../environment.static";
 
 
 interface jwtBase {

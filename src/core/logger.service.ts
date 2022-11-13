@@ -1,6 +1,6 @@
 import log4js, { Logger } from "log4js";
 import path from "path";
-import { StaticEnvironment } from "./enviroment.static";
+import { StaticEnvironment } from "./environment.static";
 
 
 interface ILoggerService {

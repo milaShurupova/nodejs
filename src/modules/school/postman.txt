@@ -1,0 +1,22 @@
+
+
+
+
+DELETE BOARD TYPE BY id
+ADD BOARD TYPE
+?? big refactor
+
+
+
+
+
+
+
+
+
+
+    
+
+    
+
+    

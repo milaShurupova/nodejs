@@ -1,0 +1,15 @@
+
+(8)
+Complete CRUD for classrooms;
+
+(9)
+Complete CRUD for teachers;
+
+(10)
+Create a stored procedure for updating the teacher data using transaction;
+
+(11)
+Treat in updateTeacherById a situation in which a non-existing profession is being passed;
+
+(12)
+Add a new endpoint to add a new profession for an existing teacher and will return the full teacher object upon addition;
